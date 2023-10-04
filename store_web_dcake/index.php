@@ -1,10 +1,16 @@
+<?php
+require 'config/config.php';
+require 'config/conexion_producto.php';
+session_destroy();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/Style.css"> 
     <link rel="shortcut icon" href="/images2/icologo.ico">
 </head>
@@ -27,16 +33,20 @@
             <a href="#">
                 <img class= "iconcarrito" src="/images2/carrito.gif" alt="">
             </a>
-            <a href="">
+            <a href="#">
                 <img class= "iconvendedor"src="/images2/vendedor.gif" alt="">
             </a>
-            <a href="">
+            <a href="#">
                 <img class = "iconestrella"src="/images2/estrella.gif" alt="">
             </a>
-            <a class = "textmicarrito" href="#"> Mi carrito</a>
+
+            <a class = "textmicarrito" href="../checkout.php">
+                 Mi carrito<span id = "num_cart" class = "badge bg-secondary"><?php echo $num_cart; ?></span>
+            </a>
             <a class = "textvendedor"href="#">Ingreso a vendedor</a>
             <a class = "textfidelizate"href="#">Fidelizate</a>
         </div>
+
           <nav class = infoprincipal>
             <a class = font_textinfo href="#">Télefono: (604) 34 233 23</a>
             <a class = font_textinfo href="#">Servicio al cliente</a>
@@ -70,9 +80,9 @@
         <hr>
         <div class = "columna">
              <img class = "sizephoto zoom2"src="images2/torta.jpg" alt="torta de chocolate">
-             <h3>
+             <h6>
                 Torta de chocolate
-             </h3>
+             </h6>
              <p>
                  Que sugerir no sea un miedo, hazlo con confianza
              </p>
@@ -83,9 +93,9 @@
 
         <div class = "columna">
              <img class = "sizephoto zoom2"src="images2/torta2.jpg" alt="torta de chocolate">
-             <h3>
+             <h6>
                 Torta de café
-             </h3>
+             </h6>
              <p>
                 Llega a D'cake sin problemas, ponte en plan y ven a visitarnos
              </p>
@@ -95,9 +105,9 @@
 
         <div class = "columna">
              <img class = "sizephoto zoom2"src="images2/torta3.jpg" alt="torta de cafe">
-             <h3>
+             <h6>
                 Torta de chocolate explosión
-             </h3>
+             </h6>
              <p>
                 Sabemos que hay muchas fechas importantes, quieres algo diferente, ¿cierto?
              </p>
@@ -107,9 +117,9 @@
 
         <div  class = "columna">
              <img class = "sizephoto zoom2"src="images2/torta4.jpg" alt="torta de chocolate">  
-             <h3>
+             <h6>
                 Torta de chocolate fusión
-             </h3>
+             </h6>
              <p>
                 Obten bonos, gana premios y muchas cosas más. Para D'cake son muy importante sus clientes.
              </p>
@@ -270,6 +280,8 @@
 
          <a  href="#"><img class= "sizeicon-section4"src="images2/instagram.png" alt="instagramdirection"></a>
     </section>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </body>
 </html>

@@ -8,10 +8,10 @@
 
 }
 p{
-      color: white;
+      color: rgb(0, 0, 0);
 }
 p:hover{
-      color: #000000;
+      color: #ffffff;
 }
 h4:hover{
      color: #1e466e;
@@ -442,9 +442,11 @@ header{
       left: 400px;
 }
 
-
-.descripcion_prod{
-      right: 500px;
-      top: 400px;
-      
+.descrip{
+      position:absolute;
+      right: -300px;
+      bottom: 250px;
+}
+.tt-desc-posi{
+      margin-bottom: -40px;
 }

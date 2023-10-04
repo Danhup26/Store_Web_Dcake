@@ -16,7 +16,6 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/Style.css"> 
     <link rel="shortcut icon" href="/images2/icologo.ico">
@@ -36,6 +35,23 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
                  <img class = "logo zoomlogo"src="/images2/dcakelogo.png" alt="dcake logo oficial">
             </a>
           <input class = "searchinput" type="text" placeholder = "¿Que desea degustar?">
+        </div>
+        <div>
+            <a href="#">
+                <img class= "iconcarrito" src="/images2/carrito.gif" alt="">
+            </a>
+            <a href="#">
+                <img class= "iconvendedor"src="/images2/vendedor.gif" alt="">
+            </a>
+            <a href="#">
+                <img class = "iconestrella"src="/images2/estrella.gif" alt="">
+            </a>
+
+            <a class = "textmicarrito" href="../checkout.php">
+                 Mi carrito<span id = "num_cart" class = "badge bg-secondary"><?php echo $num_cart; ?></span>
+            </a>
+            <a class = "textvendedor"href="#">Ingreso a vendedor</a>
+            <a class = "textfidelizate"href="#">Fidelizate</a>
         </div>
           <nav class = infoprincipal>
             <a class = font_textinfo href="#">Télefono: (604) 34 233 23</a>
@@ -79,16 +95,45 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
                 <?php echo number_format ($row['Precio'],2, ',','.'); ?>
             </p>
 
-            <p class = "btn btn-primary btn-lg center">
-                 <a href="detalles.php?Codigo=<?php echo $row['Codigo']; ?>&token=<?php echo hash_hmac("sha1", $row['Codigo'], KEY_TOKEN); ?>" class="text_detalle">Detalles</a>
-            </p>
-            <p class = "btn btn-secondary btn-lg">
-                <a class = "text_agregar"href="#">Añadir a mi carrito</a>
-            </p>
+            <button class = "btn btn-primary btn-lg center" type = "button">
+                 <a href="detalles.php?Codigo=<?php 
+                 echo $row['Codigo']; ?>&token=<?php echo hash_hmac('sha1', $row['Codigo'], KEY_TOKEN); ?>" 
+                 class="text_detalle">Detalles</a>
+            </button>
+            
+            <button class ="btn btn-outline-success btn-lg center" type="button" onclick = "addProducto
+            (<?php echo $row['Codigo']; ?>, '<?php echo hash_hmac('sha1', $row['Codigo'], 
+            KEY_TOKEN); ?>')">Añadir al carrito</button>
+            
             <?php } ?>
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+    <script>
+        function addProducto(id, token){
+            let url = '../clases/carrito.php'
+            let formData = new FormData()
+            formData.append('Codigo', id)
+            formData.append('token', token)
+
+            fetch(url,{
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+             }).then(response => response.json())
+             .then(data => {
+                if(data.ok){
+                    let elemento = document.getElementById("num_cart")
+                    elemento.innerHTML = data.numero
+                }else {
+      console.error("Error en la respuesta:", data.error);
+    }
+  })
+  .catch(error => {
+    console.error("Error en la solicitud:", error);
+  });
+            }
+    </script>
 </body>
 </html>

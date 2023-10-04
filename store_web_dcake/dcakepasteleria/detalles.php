@@ -1,3 +1,4 @@
+
 <?php
 
 require '../config/config.php';
@@ -92,14 +93,15 @@ if($id == '' || $token == '') {
             <a href="#">
                 <img class= "iconcarrito" src="/images2/carrito.gif" alt="">
             </a>
-            <a href="">
+            <a href="#">
                 <img class= "iconvendedor"src="/images2/vendedor.gif" alt="">
             </a>
-            <a href="">
+            <a href="#">
                 <img class = "iconestrella"src="/images2/estrella.gif" alt="">
             </a>
-            <a class = "textmicarrito" href="../dcakepasteleria/pedido/carrito.php">
-                 Mi carrito<span id = "num_cart" class = "badge bg-secondary"></span>
+
+            <a class = "textmicarrito" href="../checkout.php">
+                 Mi carrito<span id = "num_cart" class = "badge bg-secondary"><?php echo $num_cart; ?></span>
             </a>
             <a class = "textvendedor"href="#">Ingreso a vendedor</a>
             <a class = "textfidelizate"href="#">Fidelizate</a>
@@ -120,62 +122,76 @@ if($id == '' || $token == '') {
             <a class= "product"href="#"> Cupcakes</a>
             <a class= "product"href="#"> Brownies</a>
     </nav>
-
-    <section class = "container-sm">
-        <div>
-            <h2><?php echo $nombre;?></h2>
-
-            <div id="carouselExample" class="carousel slide">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
+    <main class = "container-sm">
+        <div class = "d-flex  d-grid gap-3">
+            <div>
+                <div>
+                    <h1><?php echo $nombre;?></h1>
+                </div>
+                <div id="carouselExample" class="carousel slide">
+                     <div class="carousel-inner">
+                     <div class="carousel-item active">
                         <img class = "bizcocho"src="<?php echo $rutaImg;?>" class="d-block w-100">
                         </div>
 
                         <?php  foreach( $imagenes as $img){?>
-                        <div class="carousel-item">
+                    <div class="carousel-item">
                         <img class = "bizcocho"src="<?php echo $img;?>" class="d-block w-100">
+                    </div>
+                    <?php }?>
+                    </div>
+                        <button class="carouselImages" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                            <span class="carouselImages" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
 
-                        </div>
-                        <?php }?>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                         </button>
                     </div>
-                    <button class="carouselImages" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                        <span class="carouselImages" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                    </div>
-        </div> 
-        <div>
+                </div>
+            </div>
+
             <?php if($descuento > 0 ) { ?>
-            <p><del><?php echo MONEDA . number_format($precio, 2, ',','.'); ?></del></p>
-            <h2>
+            <div>
+                 <p><del><?php echo MONEDA . number_format($precio, 2, ',','.'); ?></del></p>
+            </div>   
+
+            <div> 
+                <h2>
                 <?php echo MONEDA . number_format($precio_desc, 2, ',','.'); ?>
                 <small class = "text-success"><?php echo $descuento; ?>% de descuento</small>
-            </h2>     
-                <?php } else {?> 
+                </h2>
+            </div>   
 
-                  <h2><?php echo MONEDA . number_format($precio, 2, ',','.'); ?></h2>
-                
-                <?php } ?>
-                  <p class ="descripcion_prod">
-                <?php echo $descripcion;?>
-                 </p>
-            <div class = "d-grid gap-3 col-10 mx.auto">
-            <button class ="btn btn-primary btn-lg" type="button">Comprar ahora</button>
-            <button class ="btn btn-primary btn-lg" type="button" onclick = "addProducto(<?php echo 
-            $id; ?>, '<?php echo $token_tmp;?>')">Añadir al carrito</button>
-            </div>       
+            <?php } else {?> 
+            <div class = "d-grid gap-3 col-9 mx.10">       
+                <h2><?php echo MONEDA . number_format($precio, 2, ',','.'); ?></h2>
+            </div> 
+
+            <?php } ?>
+
+            <div class = "d-grid gap-3 col-9 descrip">
+                <h4>Descripción</h4>
+                <p class ="tt-desc-posi"> <?php echo $descripcion;?> </p>
+            </div>
+        
+            <div class = "d-grid gap-3 col-5 mx.auto">
+                <button class ="btn btn-primary btn-lg" type="button">Comprar ahora</button>
+                <button class ="btn btn-primary btn-lg" type="button" onclick = "addProducto(<?php echo 
+                $id; ?>, '<?php echo $token_tmp;?>')">Añadir al carrito</button>
+
+                 </div>  
+            </div>
         </div>
-    
-    </section>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
         function addProducto(id, token){
-            let url = '../dcakepasteleria/pedido/carrito.php'
+            let url = '../clases/carrito.php'
             let formData = new FormData()
             formData.append('Codigo', id)
             formData.append('token', token)
@@ -184,14 +200,19 @@ if($id == '' || $token == '') {
                 method: 'POST',
                 body: formData,
                 mode: 'cors'
-            }).then(response => response.json())
-            .then(data => {
+             }).then(response => response.json())
+             .then(data => {
                 if(data.ok){
-                    let elemento = document.getElementById("num_cart");
+                    let elemento = document.getElementById("num_cart")
                     elemento.innerHTML = data.numero
-                }
-            })
-        }
+                }else {
+      console.error("Error en la respuesta:", data.error);
+    }
+  })
+  .catch(error => {
+    console.error("Error en la solicitud:", error);
+  });
+            }
     </script>
 </body>
 </html>
