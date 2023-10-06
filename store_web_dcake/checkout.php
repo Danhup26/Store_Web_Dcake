@@ -69,7 +69,6 @@ if($productos != null){
           </nav>
     </header>
 
-    
     <main >
         <div class = "container"> 
             <table class="table">
@@ -100,43 +99,41 @@ if($productos != null){
                             ?>
                 
                     <tr>
-                        <td> <?php echo $nombre?></td>
-                        <td> <?php echo MONEDA . number_format($precio_desc,2, ',' , '.'); ?></td>
+                        <td class="nombre_producto"> <?php echo $nombre?></td>
+                        <td class = "precio-producto"> <?php echo MONEDA . number_format($precio_desc,0, ',' , '.'); ?> </td>
                         <td>
-                            <input type ="number" min="1" max ="10" step="1" value= "<?php echo 
+                            <input class = "cantidad-producto"type ="number" min="1" max ="10" step="1" value= "<?php echo 
                             $cantidad ?>" size ="5" id="cantidad_<?php echo $_id; ?>" 
                             onchange="actualizaCantidad(this.value, <?php echo $_id; ?>)">
                         </td>
                         <td> 
-                            <div id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
-                            MONEDA . number_format($subtotal, 2, ',' , '.'); ?></div>
+                            <div class ="subtotal-producto" id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
+                            MONEDA . number_format($subtotal, 0, ',' , '.'); ?></div>
                         </td>    
-                        <td><a href="#" id= "eliminar" class= "btn btn-warning btn-sm" data-bs-id ="<?php 
+                        <td> <a href="#" id= "eliminar" class= "btn btn-warning btn-sm" data-bs-id ="<?php 
                         echo $_id ?>" data-bs-toggle="modal" data-bs-target="#eliminaModal">Eliminar</a></td>
-                   
                     </tr>
-                    <?php }?>
-
+                    <?php } ?>
                     <tr>
                         <td colspan = "3"></td>
                         <td colspan = "2">
-                        <p class = "h3" id = "total"><?php echo MONEDA . number_format($total, 2 , ',', '.' ); ?></p>
+                        <p class = "h3" id = "total"><?php echo MONEDA . number_format($total, 0 , ',', '.' ); ?></p>
                         </td>
                     </tr>      
-
                 </tbody>
             <?php } ?>                
             </table>    
         </div>
 
         <div class = "row">
-            <div class = "col-md-4 offset-md-6 d-grid gap-2">
-                <button class = " btn btn-primary btn-lg ">Ir a WhatsApp a pagar</button>
+            <div class = "col-md-4 offset-md-6 d-grid gap-2"> 
+            <a href="#" id= "pedido" class= "btn btn-success btn-sm" data-bs-id ="<?php 
+                        echo $_id ?>" data-bs-toggle="modal" data-bs-target="#pedidoModal">Pagar por WhatsApp</a></td>
             </div>
         </div>
     </main>
 
-    <!-- Modal -->
+     <!-- Modal1  -->
         <div class="modal fade" id="eliminaModal" tabindex="-1" aria-labelledby="eliminaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -155,10 +152,102 @@ if($productos != null){
         </div>
         </div>
 
+
+     <!-- CONTIENE COMPRA A REALIZAR    -->
+    <!-- Modal2 -->
+    <div class="modal fade" id="pedidoModal" tabindex="-1" aria-labelledby="pedidoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="pedidoModalLabel">Datos del pedido</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="procesar_pedido.php" method="post">
+                    <!-- Campos de nombre, dirección, teléfono, correo, etc. -->
+                    <label class= "input-group flex-nowrap " for="nombre">Nombre:</label>
+                    <input class="form-control" type="text" name="nombre" required><br><br>
+
+                    <label class= "input-group flex-nowrap" for="direccion">Dirección:</label>
+                    <input class="form-control" type="text" name="direccion" required><br><br>
+
+                    <label class= "input-group flex-nowrap" for="telefono">Télefono:</label>
+                    <input class="form-control" type="text" name="telefono" required><br><br>
+
+                    <label class= "input-group flex-nowrap" for="correo">Correo:</label>
+                    <input class="form-control" type="text" name="correo" required><br><br>
+
+                    <!-- Agrega una lista para mostrar los productos seleccionados -->
+                    <h2>Productos Seleccionados:</h2>
+                    <ul id="lista-productos"></ul>
+                    <main >
+        <div class = "container"> 
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($lista_carrito == null){
+                        echo '<tr><td colspan= "5" class = "text-center"><b>Lista vacia</b></td></tr>';
+                    }else{
+
+                          $total = 0;
+                        foreach($lista_carrito as $producto){
+                            $_id = $producto['Codigo'];
+                            $nombre = $producto['Nombre'];
+                            $precio = $producto['Precio'];
+                            $descuento = $producto['Descuento'];
+                            $cantidad = $producto['cantidad'];
+                            $precio_desc = $precio -(($precio * $descuento) / 100);
+                            $subtotal = $cantidad * $precio_desc;
+                            $total += $subtotal;
+                            ?>
+                
+                    <tr>
+                        <td> <?php echo $nombre?></td>
+                        <td> <?php echo MONEDA . number_format($precio_desc,2, ',' , '.'); ?></td>
+                        <td>
+                            <?php echo 
+                            $cantidad ?>
+                        </td>
+                        <td> 
+                            <div id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
+                            MONEDA . number_format($subtotal, 2, ',' , '.'); ?></div>
+                        </td>    
+                        
+                    <?php }?>
+                    <tr>
+                        <td colspan = "3"></td>
+                        <td colspan = "2">
+                        <p class = "h3" id = "total"><?php echo MONEDA . number_format($total, 2 , ',', '.' ); ?></p>
+                        </td>
+                    </tr>      
+                </tbody>
+            <?php } ?>                
+            </table>    
+        </div>
+    </main>                   
+</form>
+</div>
+            <div class="modal-footer">
+                <!-- Botón "Ir a WhatsApp" -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
+                <button id="btn-ir-whatsapp" type="button" class="btn btn-success">Ir a WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
-
+        // ACTUALIZAR PRODUCTOS
         let eliminaModal = document.getElementById('eliminaModal')
         eliminaModal.addEventListener('show.bs.modal', function(event){
 
@@ -200,7 +289,7 @@ if($productos != null){
                 } 
             })
         }
-
+        // JAVASCRIPT FUNCION ELIMINAR
         function eliminar()
         {
             let botonElimina = document.getElementById('btn-elimina')
@@ -223,5 +312,45 @@ if($productos != null){
             })
         }
     </script>
+
+ <!-- REDIRECIONAR A WHATSAPP  -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtén los elementos del formulario
+        const nombreInput = document.querySelector('input[name="nombre"]');
+        const direccionInput = document.querySelector('input[name="direccion"]');
+        const telefonoInput = document.querySelector('input[name="telefono"]');
+        const correoInput = document.querySelector('input[name="correo"]');
+        const irAWhatsappButton = document.getElementById('btn-ir-whatsapp');
+
+        // Agrega un evento al botón "Ir a WhatsApp"
+        irAWhatsappButton.addEventListener('click', function() {
+            // Obtén los valores de los campos del formulario
+            const nombre = nombreInput.value;
+            const direccion = direccionInput.value;
+            const telefono = telefonoInput.value;
+            const correo = correoInput.value;
+
+            // Construye el mensaje de WhatsApp con los detalles del pedido
+            let mensaje = `D'cake pasteleria.\nProceso de pedido\n Pedido de ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nCorreo: ${correo}\n`;
+
+            // Obtén los productos seleccionados dinámicamente
+            const productos = document.querySelectorAll('.producto-seleccionado');
+            productos.forEach(function(producto) {
+                const nombreProducto = producto.querySelector('.nombre_producto').textContent;
+                const precioProducto = producto.querySelector('.precio-producto').textContent;
+                const cantidadProducto = producto.querySelector('.cantidad-producto').textContent;
+                const subtotalProducto = producto.querySelector('.subtotal-producto').textContent;
+                mensaje += `Producto: ${nombreProducto}\nPrecio: ${precioProducto}\nCantidad: ${cantidadProducto}\n`;
+            });
+
+            // URL de WhatsApp para enviar el mensaje
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=573008936926&text=${encodeURIComponent(mensaje)}`;
+
+            // Abre WhatsApp en una nueva ventana o pestaña
+            window.open(whatsappUrl, '_blank');
+        });
+    });
+</script>
 </body>
 </html>

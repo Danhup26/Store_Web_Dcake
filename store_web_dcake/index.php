@@ -1,7 +1,6 @@
 <?php
 require 'config/config.php';
 require 'config/conexion_producto.php';
-session_destroy();
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +42,7 @@ session_destroy();
             <a class = "textmicarrito" href="../checkout.php">
                  Mi carrito<span id = "num_cart" class = "badge bg-secondary"><?php echo $num_cart; ?></span>
             </a>
-            <a class = "textvendedor"href="#">Ingreso a vendedor</a>
+            <a class = "textvendedor"href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a>
             <a class = "textfidelizate"href="#">Fidelizate</a>
         </div>
 
