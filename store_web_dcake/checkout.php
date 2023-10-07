@@ -106,8 +106,8 @@ if($productos != null){
                             $cantidad ?>" size ="5" id="cantidad_<?php echo $_id; ?>" 
                             onchange="actualizaCantidad(this.value, <?php echo $_id; ?>)">
                         </td>
-                        <td> 
-                            <div class ="subtotal-producto" id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
+                        <td class ="subtotal" > 
+                            <div id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
                             MONEDA . number_format($subtotal, 0, ',' , '.'); ?></div>
                         </td>    
                         <td> <a href="#" id= "eliminar" class= "btn btn-warning btn-sm" data-bs-id ="<?php 
@@ -194,7 +194,7 @@ if($productos != null){
                 </thead>
                 <tbody>
                     <?php if($lista_carrito == null){
-                        echo '<tr><td colspan= "5" class = "text-center"><b>Lista vacia</b></td></tr>';
+                        echo '<tr ><td colspan= "5" class = "text-center"><b>Lista vacia</b></td></tr>';
                     }else{
 
                           $total = 0;
@@ -209,14 +209,11 @@ if($productos != null){
                             $total += $subtotal;
                             ?>
                 
-                    <tr>
-                        <td> <?php echo $nombre?></td>
-                        <td> <?php echo MONEDA . number_format($precio_desc,2, ',' , '.'); ?></td>
-                        <td>
-                            <?php echo 
-                            $cantidad ?>
-                        </td>
-                        <td> 
+                    <tr class="producto-seleccionado">
+                        <td class="product"> <?php echo $nombre?></td>
+                        <td class="price"> <?php echo MONEDA . number_format($precio_desc,2, ',' , '.'); ?></td>
+                        <td class="cant"> <?php echo $cantidad ?></td>
+                        <td class ="subtotal"> 
                             <div id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
                             MONEDA . number_format($subtotal, 2, ',' , '.'); ?></div>
                         </td>    
@@ -332,16 +329,17 @@ if($productos != null){
             const correo = correoInput.value;
 
             // Construye el mensaje de WhatsApp con los detalles del pedido
-            let mensaje = `D'cake pasteleria.\nProceso de pedido\n Pedido de ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nCorreo: ${correo}\n`;
+            let mensaje = `D'cake pasteleria.\n\nProceso de pedido:\n\nPedido de: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nCorreo: ${correo}\nBANCOLOMBIA-AHORRO A LA MANO\n 030-089369-26`;
 
             // Obtén los productos seleccionados dinámicamente
             const productos = document.querySelectorAll('.producto-seleccionado');
             productos.forEach(function(producto) {
-                const nombreProducto = producto.querySelector('.nombre_producto').textContent;
-                const precioProducto = producto.querySelector('.precio-producto').textContent;
-                const cantidadProducto = producto.querySelector('.cantidad-producto').textContent;
-                const subtotalProducto = producto.querySelector('.subtotal-producto').textContent;
-                mensaje += `Producto: ${nombreProducto}\nPrecio: ${precioProducto}\nCantidad: ${cantidadProducto}\n`;
+                //const nombreProducto = producto.querySelector('.nombre_producto').textContent;
+                const nombreProducto = producto.querySelector('.product').textContent;
+                const precioProducto = producto.querySelector('.price').textContent;
+                const cantidadProducto = producto.querySelector('.cant').textContent;
+                const subtotalProducto = producto.querySelectorAll('.subtotal').textContent;
+                mensaje += `\nProducto: ${nombreProducto}\nPrecio: ${precioProducto}\nCantidad: ${cantidadProducto}\n`;
             });
 
             // URL de WhatsApp para enviar el mensaje
@@ -351,6 +349,7 @@ if($productos != null){
             window.open(whatsappUrl, '_blank');
         });
     });
+
 </script>
 </body>
 </html>

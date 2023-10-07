@@ -9,13 +9,27 @@
 }
 p{
       color: rgb(0, 0, 0);
+      
 }
 p:hover{
-      color: #ffffff;
+      color: #0f2439;
+}
+h4{
+      font-size: 12px;
 }
 h4:hover{
      color: #1e466e;
 }
+h5{
+      font-size:12px;
+}
+
+
+.text-info{
+      font-size: 12px;
+      color: white;
+}
+
 .whatsappicon{
       position: fixed;
       width: 60px;
@@ -40,11 +54,11 @@ h4:hover{
       height: 60px;
       line-height: 80px;
       bottom: 50px;
-      right: 60px;
+      right: 45px;
       color: white;
       text-align: center;
       -webkit-text-stroke: 0.5px #1e466e;
-      font-size: 25px;
+      font-size: 20px;
 }
 /* CABECERA DE LA PAGINA */
 header{
@@ -59,6 +73,7 @@ header{
       justify-content:space-between;
 }
 .logo{
+      width: 80%;
       height: 130px;
       width: 250px;
       background-color: #1e466e;   
@@ -67,9 +82,7 @@ header{
 .zoomlogo:hover.logo{
       -webkit-transform:scale(0.9);transform:scale(0.9);}
 .zoomlogo{overflow:hidden;}
-.logo:hover{
-      background: white;
-}
+
 
 .searchinput{
       width: 350px;
@@ -201,6 +214,7 @@ header{
       text-align: center;
 }
 .sizephoto{
+      max-width: 100%;
       width: 300px;
       height: 300px;
       border-radius: 5px;
@@ -250,8 +264,8 @@ header{
       color: #1e466e
 }
 .sizeicon{
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
 }
 .zoom:hover.sizeicon{
@@ -450,3 +464,89 @@ header{
 .tt-desc-posi{
       margin-bottom: -40px;
 }
+/* RESPONSIVE */
+@media screen and (max-width: 768px) {
+      /* HEADER */
+      .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          }
+        
+          .logo-search {
+            text-align: center;
+            margin-bottom: 10px;
+          }
+        
+          .searchinput {
+            width: 100%;
+            max-width: 300px;
+          }
+        
+          .icons-nav {
+            text-align: center;
+          }
+        
+          .icon {
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+          }
+        
+          .text {
+            font-size: 14px;
+          }
+      
+      .contact-header {
+            text-align: center; /* Centra los elementos horizontalmente */
+            padding: 10px; /* Agrega espaciado alrededor de los elementos */
+          }
+        
+          .whatsapp-icon {
+            width: 50px; /* Ajusta el tamaño del ícono de WhatsApp */
+            height: 50px;
+            margin-bottom: 10px; /* Agrega espacio entre el ícono y el texto */
+          }
+        
+          .contactar {
+            font-size: 18px; /* Ajusta el tamaño de fuente del encabezado */
+          }
+
+      .general_nav1 {
+        text-align: center; /* Centra los elementos */
+      }
+    
+      .product {
+        display: block; /* Muestra cada enlace en una línea */
+        margin: 10px 0; /* Agrega espaciado vertical entre enlaces */
+      }
+      /* TORTAS DEL MES MES */
+      .nonav {
+            text-align: center; /* Centra el contenido de la sección */
+          }
+          
+          .tortas1 {
+            font-size: 24px; /* Ajusta el tamaño del texto según tus preferencias */
+          }
+      
+      /* IMAGENES Y TEXTO */
+
+      .general_section {
+            flex-wrap: wrap; /* Hace que las columnas se envuelvan en filas */
+            justify-content: center; /* Centra las columnas horizontalmente */
+          }
+        
+          .columna {
+            flex: 1; /* Ocupa el espacio disponible en el contenedor */
+            margin: 10px; /* Agrega espaciado entre las columnas */
+            text-align: center; /* Centra el contenido de las columnas */
+          }
+        
+          .sizephoto {
+            max-width: 100%; /* Hace que las imágenes sean responsivas */
+          }
+        
+          h6 {
+            font-size: 18px; /* Tamaño de fuente ajustado para una mejor legibilidad */
+          }
+    }

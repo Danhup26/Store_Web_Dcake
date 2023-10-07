@@ -30,12 +30,46 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
         WhatsApp
     </h3>
     <header>
-        <div class = "justifyheader">
-                    <a href="/index.php">
+    <div class = "justifyheader">
+            <a href="index.php">
                  <img class = "logo zoomlogo"src="/images2/dcakelogo.png" alt="dcake logo oficial">
             </a>
-          <input class = "searchinput" type="text" placeholder = "¿Que desea degustar?">
+            <form action="" method ="GET">
+                <input type="text" name="busqueda" placeholder="¿Que deseas degustar hoy?"><br>
+                <input type="submit" name = "buscar" value="Buscar">
+            </form>
         </div>
+
+        <br><br><br>
+    <!-- Buscador -->
+    <?php
+    // Verificar si se ha enviado el formulario de búsqueda
+    if (isset($_GET['buscar'])) {
+        // Recuperar el término de búsqueda ingresado por el usuario
+        $busqueda = $_GET['busqueda'];
+
+        $conexion3 = new mysqli("localhost", "root", "", "store_web_dcake");
+
+        if ($conexion3->connect_error) {
+            die("Error en la conexión a la base de datos: " . $conexion3->connect_error);
+        }
+
+        $sql = "SELECT * FROM producto WHERE Nombre LIKE '%" . $busqueda . "%'";
+        $resultado = $conexion3->query($sql);
+
+        // Verificar si se encontraron resultados
+        if ($resultado->num_rows > 0) {
+            echo "<h2>Resultados de la búsqueda:</h2>";
+            while ($row = $resultado->fetch_assoc()) {
+                echo $row['Nombre'] . "<br>";
+            }
+        } else {
+            echo "<p>No se encontraron resultados para '$busqueda'.</p>";
+        }
+
+        $conexion3->close();
+    }
+    ?>
         <div>
             <a href="#">
                 <img class= "iconcarrito" src="/images2/carrito.gif" alt="">
@@ -87,7 +121,7 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
                 $imagen = "../images/nofoto.jpg";
             }
             ?>
-            <img class = "bizcocho"src="<?php echo $imagen; ?>" alt="">
+            <img class = "bizcocho img-fluid"src="<?php echo $imagen; ?>" alt="">
             <h3 class = text_bizcocho_naranja>
                 <?php echo $row['Nombre'] ?>
             </h3>
@@ -108,7 +142,6 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
             <?php } ?>
         </div>
     </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
         function addProducto(id, token){
@@ -135,5 +168,6 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
   });
             }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
