@@ -3,10 +3,7 @@
       margin: 30px;
       background-color: #b6c8da;
 }
-.general_font1{
-      font-family:"Lucida Console", Monaco, monospace;
 
-}
 p{
       color: rgb(0, 0, 0);
       
@@ -23,11 +20,12 @@ h4:hover{
 h5{
       font-size:12px;
 }
-
-
-.text-info{
-      font-size: 12px;
-      color: white;
+header{
+      display: flex;
+      background-color: #1e466e;
+      margin-bottom: 5px;
+      display: flex;
+      border-radius: 10px;
 }
 
 .whatsappicon{
@@ -45,9 +43,7 @@ h5{
       box-shadow: 0px, 1px, 5px rgb(0,0,0.3);
       z-index: 100;
 }
-.font_contactar{
-      font-family: 'Martian Mono', monospace;
-}
+
 .contactar{
       position: fixed;
       width: 60px;
@@ -61,146 +57,48 @@ h5{
       font-size: 20px;
 }
 /* CABECERA DE LA PAGINA */
-header{
-      background-color: #1e466e;
-      margin-bottom: 5px;
-      display: flex;
-      border-radius: 10px;
-}
-/* estilo al logo y la caja de busqueda*/
-.justifyheader{
-      display: flex;
-      justify-content:space-between;
-}
+
 .logo{
-      width: 80%;
+      width: 60%;
       height: 130px;
       width: 250px;
-      background-color: #1e466e;   
-      margin-left: 50px;
+      background-color: #1e466e;  
 }
 .zoomlogo:hover.logo{
       -webkit-transform:scale(0.9);transform:scale(0.9);}
 .zoomlogo{overflow:hidden;}
 
-
-.searchinput{
-      width: 350px;
-      height: 30px;
-      border-radius: 10px;
-      margin-top: 50px;
-      margin-left: 100px;
+.mensaje{
+      left: 120px;
 }
-.iconcarrito{
-      position:absolute;
-      margin-left: 200px;
-      margin-top: 60px;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+.buscador{
+      left: 130px;
 }
-.iconcarrito:hover{
-      -webkit-transform:scale(1.3);transform:scale(1.3);
-      .zoom {overflow:hidden;}
+.anclas{
+      margin-bottom: 90px;
+      font-size: 13px;
 }
-.textmicarrito{
-      margin-top: 110px;
-      margin-left: 190px;
-      position: absolute;
-      text-decoration: none;
-      color: white;
-      font-size: 10px;
-}
-.iconvendedor{
-      position:absolute;
-      margin-left: 410px;
-      margin-top: 60px;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-}
-.iconvendedor:hover{
-      -webkit-transform:scale(1.3);transform:scale(1.3);
-      .zoom {overflow:hidden;}
+.sizei{
+      width: 35px;
+      height: 35px;
 }
 
-.textvendedor{
-      margin-top: 110px;
-      margin-left: 380px;
-      position: absolute;
-      text-decoration: none;
-      color: white;
-      font-size: 10px;
+.carrito{
+      position: relative;
+      bottom: 40px;
+      left: 70px;
 }
-.iconestrella{
-      position:absolute;
-      margin-left: 305px;
-      margin-top: 60px;
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+.estrella{
+      position: relative;
+      bottom: 40px;
+      left: 65px;
 }
-.iconestrella:hover{
-      -webkit-transform:scale(1.3);transform:scale(1.3);
-      .zoom {overflow:hidden;}
-}
-.textfidelizate{
-      margin-top: 110px;
-      margin-left: 295px;
-      position: absolute;
-      text-decoration: none;
-      color: white;
-      font-size: 10px;
-}
-.infoprincipal{
-      margin-left: 120px;
-      margin-top: 15px;
-}
-.font_textinfo{
-      color: white;
-      text-decoration: none;
-      padding-right: 15px;
-      font-size: 10px;
-}
-.font_textinfo:hover{
-      color: #b6c8da;
+.vendedor{
+      position: relative;
+      bottom: 40px;
+      left: 85px;
 }
 
-/* barra de navegacion principal */
-.general_nav1{
-      display: inline-block;
-      justify-content: space-between;
-      background-color: #ffffff;
-      padding: 2px;
-      margin-left: 2px;
-      margin-bottom: 5px;
-}
-/* enlaces de navegacion */
-.product{
-      color: rgb(255, 255, 255);
-      background-color: #0f2439;
-      font-size: 12px;
-      font-family:cursive;
-      text-decoration: none;
-      padding-right: 60px;
-      padding-left: 60px;
-}
-/* metodo*/
-.product:hover{
-      background-color:rgb(85, 85, 143);
-}
-
-/* barra de presentacion no navegable, posterior */
-.nonav{
-      display:flex;
-      justify-content: space-around;
-      background-color: #1e466e;
-      border-radius: 10px;
-}
-.tortas1{
-      color:aliceblue;
-      font-size: 25px;
-}
 /* SECCIÓN 1 */
 /* productos */
 .general_section{

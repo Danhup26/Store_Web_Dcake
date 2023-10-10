@@ -100,7 +100,7 @@ if($productos != null){
                 
                     <tr>
                         <td class="nombre_producto"> <?php echo $nombre?></td>
-                        <td class = "precio-producto"> <?php echo MONEDA . number_format($precio_desc,0, ',' , '.'); ?> </td>
+                        <td class = "precio-producto"> <?php echo MONEDA . number_format($precio_desc, 2, ',' , '.'); ?> </td>
                         <td>
                             <input class = "cantidad-producto"type ="number" min="1" max ="10" step="1" value= "<?php echo 
                             $cantidad ?>" size ="5" id="cantidad_<?php echo $_id; ?>" 
@@ -108,7 +108,7 @@ if($productos != null){
                         </td>
                         <td class ="subtotal" > 
                             <div id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
-                            MONEDA . number_format($subtotal, 0, ',' , '.'); ?></div>
+                            MONEDA . number_format($subtotal, 2, ',' , '.'); ?></div>
                         </td>    
                         <td> <a href="#" id= "eliminar" class= "btn btn-warning btn-sm" data-bs-id ="<?php 
                         echo $_id ?>" data-bs-toggle="modal" data-bs-target="#eliminaModal">Eliminar</a></td>
@@ -117,7 +117,7 @@ if($productos != null){
                     <tr>
                         <td colspan = "3"></td>
                         <td colspan = "2">
-                        <p class = "h3" id = "total"><?php echo MONEDA . number_format($total, 0 , ',', '.' ); ?></p>
+                        <p class = "h3" id = "total"><?php echo MONEDA . number_format($total, 2 , ',', '.' ); ?></p>
                         </td>
                     </tr>      
                 </tbody>
