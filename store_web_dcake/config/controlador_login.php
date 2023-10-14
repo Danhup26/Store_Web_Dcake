@@ -12,6 +12,7 @@
 </html>
 
 <?php
+
 $usuario = $_POST['usuario'];
 $contraseña = $_POST['contraseña'];
 
@@ -23,9 +24,8 @@ $resultado = mysqli_query($conexion,$consulta);
 
 $filas = mysqli_num_rows($resultado);
 
-if($filas > 0) { 
-
-    header("location: ../dcakepasteleria/portalvendedor.php");
+if($filas > 0) {
+    header("location: ../dcakepasteleria/iniciovendedor.php");
 } else { ?>
 
 <div class="container center-message">

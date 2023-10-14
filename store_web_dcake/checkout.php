@@ -25,7 +25,7 @@ if($productos != null){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/Style.css"> 
     <link rel="shortcut icon" href="/images2/icologo.ico">
 </head>
@@ -38,35 +38,38 @@ if($productos != null){
     <h3 class= "contactar font_contactar">
         WhatsApp
     </h3>
-    <header>
-        <div class = "justifyheader">
-                    <a href="/index.php">
-                 <img class = "logo zoomlogo"src="/images2/dcakelogo.png" alt="dcake logo oficial">
-            </a>
-          <input class = "searchinput" type="text" placeholder = "¿Que desea degustar?">
-        </div>
-        <div>
-            <a href="#">
-                <img class= "iconcarrito" src="/images2/carrito.gif" alt="">
-            </a>
-            <a href="#">
-                <img class= "iconvendedor"src="/images2/vendedor.gif" alt="">
-            </a>
-            <a href="#">
-                <img class = "iconestrella"src="/images2/estrella.gif" alt="">
-            </a>
+    <header class="py-2 text-white">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+             <!-- LOGO -->
+                <div class="col-md-2">
+                    <a href="../index.php">
+                        <img class="logo zoomlogo" src="/images2/dcakelogo.png" alt="dcake logo oficial">
+                    </a>
+                </div>
 
-            <a class = "textmicarrito" href="../clases/carrito.php">
-                 Mi carrito<span id = "num_cart" class = "badge bg-secondary"><?php echo $num_cart; ?></span>
-            </a>
-            <a class = "textvendedor"href="#">Ingreso a vendedor</a>
-            <a class = "textfidelizate"href="#">Fidelizate</a>
+    <!-- ANCLAS -->
+    <div class="col-md-5 text-right"> <!-- Columna para anclas e iconos -->
+    <nav class= "anclas">
+        <!-- Anclas -->
+            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-phone"></i> Teléfono: (604) 34 233 23</a>
+            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-user"></i> Servicio al cliente</a>
+            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+                </nav>      
+                    <!-- Iconos -->
+                <nav>
+                        <a href="/checkout.php"><img  class = "sizei carrito" src="../images2/carrito.png" ></img></a>
+                        </a><span class="text-white ml-2"><a href="/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
+                    
+                        <a href="#"><img class="sizei estrella"src="../images2/estrella.png" alt=""></a>
+                        <span class="text-white ml-2"><a href="#">Fidelizate</a></span>
+                     
+                        <a href="../dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../images2/vendedor.png" alt=""></a>
+                        <span class="text-white ml-2"><a href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a></span> 
+                </nav>
+            </div>
         </div>
-          <nav class = infoprincipal>
-            <a class = font_textinfo href="#">Télefono: (604) 34 233 23</a>
-            <a class = font_textinfo href="#">Servicio al cliente</a>
-            <a class = font_textinfo href="#">Ayuda</a>
-          </nav>
+    </div>
     </header>
 
     <main >
@@ -126,8 +129,8 @@ if($productos != null){
         </div>
 
         <div class = "row">
-            <div class = "col-md-4 offset-md-6 d-grid gap-2"> 
-            <a href="#" id= "pedido" class= "btn btn-success btn-sm" data-bs-id ="<?php 
+            <div class = "col-md-4 offset-md-7 d-grid gap-2"> 
+            <a href="#" id= "pedido" class= "btn btn-success btn-block btn-sm" data-bs-id ="<?php 
                         echo $_id ?>" data-bs-toggle="modal" data-bs-target="#pedidoModal">Pagar por WhatsApp</a></td>
             </div>
         </div>
@@ -349,7 +352,8 @@ if($productos != null){
             window.open(whatsappUrl, '_blank');
         });
     });
-
 </script>
+
+
 </body>
 </html>

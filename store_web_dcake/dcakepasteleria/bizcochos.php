@@ -17,7 +17,7 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/Style.css"> 
+    <link rel="stylesheet" href="/css/Style.css">
     <link rel="shortcut icon" href="/images2/icologo.ico">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -87,8 +87,8 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
     <nav class= "anclas">
         <!-- Anclas -->
             <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-phone"></i> Teléfono: (604) 34 233 23</a>
-            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-user"></i> Servicio al cliente</a>
-            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+            <a class="text-white mb-2 d-inline mr-3 small" href="/dcakepasteleria/servicioalcliente.php"><i class="fas fa-user"></i> Servicio al cliente</a>
+            <a class="text-white mb-2 d-inline mr-3 small" href="/dcakepasteleria/help.php"><i class="fas fa-question-circle"></i> Ayuda</a>
                 </nav>      
                     <!-- Iconos -->
                 <nav>
@@ -154,7 +154,7 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
                 $imagen = "../images/nofoto.jpg";
             }
             ?>
-            <img class = "bizcocho img-fluid"src="<?php echo $imagen; ?>" alt="">
+            <img class = "bizcocho img-fluid img-thumbnail"src="<?php echo $imagen; ?>" alt="">
             <h3 class = text_bizcocho_naranja>
                 <?php echo $row['Nombre'] ?>
             </h3>

@@ -1,11 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
        /* Estilos para centrar el contenido vertical y horizontalmente */
@@ -34,6 +34,7 @@
 </head>
 
 <body>
+    <?php include ('../config/insertar_producto.php');?>
 <div class="form-container form-responsive">
         <h1 class="mb-4">Formulario de Ingreso de Producto</h1>
         <form action="../config/insertar_producto.php" method="POST">
@@ -67,9 +68,9 @@
              <!-- Botones alineados en una fila -->
              <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Agregar </button>
-                <button type="button" class="btn btn-danger">Eliminar </button>
-                <button type="button" class="btn btn-info">Consultar </button>
-                <button type="button" class="btn btn-warning">Modificar </button>
+                <button type="submit" class="btn btn-danger">Eliminar </button>
+                <button type="submit" class="btn btn-info">Consultar </button>
+                <button type="submit" class="btn btn-warning">Modificar </button>
             </div>
         </form>
     </div>
@@ -91,7 +92,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Aquí se mostrarán los productos desde la base de datos -->
+
               
                 
                         </tbody>
@@ -100,6 +101,42 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
+    
+    <script>
+$(document).ready(function () {
+    // Realiza una solicitud AJAX para obtener los productos desde el servidor
+    $.ajax({
+        url: "../config/recuperarprod.php", // Reemplaza con la ruta correcta a tu archivo PHP
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data) {
+                var tbody = document.querySelector("table.table.table-success.table-striped tbody");
+
+                data.forEach(function (producto) {
+                    var row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${producto.Código}</td>
+                        <td>${producto.Nombre}</td>
+                        <td>${producto.Descripción}</td>
+                        <td>${producto.Precio}</td>
+                        <td>${producto.id_categoria}</td>
+                        <td>${producto.Activo}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+    console.error("Error al cargar los productos:");
+    console.log("jqXHR:", jqXHR);
+    console.log("Status:", textStatus);
+    console.log("Error:", errorThrown);
+}
+    });
+});
+</script>
 </body>
 </html>

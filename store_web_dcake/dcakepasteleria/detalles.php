@@ -68,8 +68,8 @@ if($id == '' || $token == '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100&family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/css/Style.css">
     <link rel="shortcut icon" href="/images2/icologo.ico">
 </head>
@@ -82,56 +82,81 @@ if($id == '' || $token == '') {
     <h3 class= "contactar font_contactar">
         WhatsApp
     </h3>
-    <header>
-        <div class = "justifyheader">
-            <a href="../index.php">
-                 <img class = "logo zoomlogo"src="/images2/dcakelogo.png" alt="dcake logo oficial">
-            </a>
-          <input class = "searchinput" name = "busqueda" type="text" placeholder = "¿Que desea degustar?">
-        </div>
-        <div>
-            <a href="#">
-                <img class= "iconcarrito" src="/images2/carrito.gif" alt="">
-            </a>
-            <a href="#">
-                <img class= "iconvendedor"src="/images2/vendedor.gif" alt="">
-            </a>
-            <a href="#">
-                <img class = "iconestrella"src="/images2/estrella.gif" alt="">
-            </a>
 
-            <a class = "textmicarrito" href="../checkout.php">
-                 Mi carrito<span id = "num_cart" class = "badge bg-secondary"><?php echo $num_cart; ?></span>
-            </a>
-            <a class = "textvendedor"href="#">Ingreso a vendedor</a>
-            <a class = "textfidelizate"href="#">Fidelizate</a>
-        </div>
-          <nav class = infoprincipal>
-            <a class = font_textinfo href="#">Télefono: (604) 34 233 23</a>
-            <a class = font_textinfo href="#">Servicio al cliente</a>
-            <a class = font_textinfo href="#">Ayuda</a>
-          </nav>
-    </header>
+    <header class="py-2 text-white">
+        <div class="container">
+            <div class="row justify-content-between align-items-center">
+             <!-- LOGO -->
+                <div class="col-md-2">
+                    <a href="../index.php">
+                        <img class="logo zoomlogo" src="/images2/dcakelogo.png" alt="dcake logo oficial">
+                    </a>
+                </div>
 
-    <nav class = "general_nav1 "> 
-            <!-- barra de navegacion -->
-            <a class= "product"href="bizcochos.php"> Bizcochos</a>
-            <a class= "product"href="#"> Bizcochos con relleno</a>
-            <a class= "product"href="#"> Bizcochos con relleno y cobertura</a>
-            <a class= "product"href="#"> Postres</a>
-            <a class= "product"href="#"> Cupcakes</a>
-            <a class= "product"href="#"> Brownies</a>
-    </nav>
+    <!-- ANCLAS -->
+    <div class="col-md-5 text-right"> <!-- Columna para anclas e iconos -->
+    <nav class= "anclas">
+        <!-- Anclas -->
+            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-phone"></i> Teléfono: (604) 34 233 23</a>
+            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-user"></i> Servicio al cliente</a>
+            <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+                </nav>      
+                    <!-- Iconos -->
+                <nav>
+                        <a href="/checkout.php"><img  class = "sizei carrito" src="../images2/carrito.png" ></img></a>
+                        </a><span class="text-white ml-2"><a href="/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
+                    
+                        <a href="#"><img class="sizei estrella"src="../images2/estrella.png" alt=""></a>
+                        <span class="text-white ml-2"><a href="#">Fidelizate</a></span>
+                     
+                        <a href="../dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../images2/vendedor.png" alt=""></a>
+                        <span class="text-white ml-2"><a href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a></span> 
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- barra de navegación -->
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dcakepasteleria/bizcochos.php">Bizcochos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="bizcochos+con+relleno.php">Bizcochos con relleno</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Bizcochos con relleno y cobertura</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Postres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Cupcakes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Brownies</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
     <main class = "container-sm">
         <div class = "d-flex  d-grid gap-3">
             <div>
                 <div>
                     <h1><?php echo $nombre;?></h1>
                 </div>
-                <div id="carouselExample" class="carousel slide">
-                     <div class="carousel-inner">
-                     <div class="carousel-item active">
-                        <img class = "bizcocho"src="<?php echo $rutaImg;?>" class="d-block w-100">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class = "bizcocho"src="<?php echo $rutaImg;?>" class="d-block w-100">
                         </div>
 
                         <?php  foreach( $imagenes as $img){?>
@@ -140,15 +165,15 @@ if($id == '' || $token == '') {
                     </div>
                     <?php }?>
                     </div>
-                        <button class="carouselImages" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                            <span class="carouselImages" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
 
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                         </button>
+                            <span class="sr-only">Next</span>
+                         </a>
                     </div>
                 </div>
             </div>
@@ -187,7 +212,6 @@ if($id == '' || $token == '') {
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <script>
         function addProducto(id, token){
@@ -214,5 +238,7 @@ if($id == '' || $token == '') {
   });
             }
     </script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

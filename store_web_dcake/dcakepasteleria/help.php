@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Nosotros</title>
+    <title>Ayuda de D'cake</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <body>
     <section class="help-section bg-light py-5">
@@ -31,7 +31,7 @@
                     </form>
                 </div>
                 <div class="col-lg-6">
-                    <img src="ruta/imagen_ayuda.jpg" alt="Ayuda" class="img-fluid">
+                    <img src="../images2/ayuda.png" alt="Ayuda" class="img-fluid">
                 </div>
             </div>
         </div>

@@ -44,8 +44,8 @@ require 'config/conexion_producto.php';
                 <nav class= "anclas">
                     <!-- Anclas -->
                     <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-phone"></i> Teléfono: (604) 34 233 23</a>
-                    <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-user"></i> Servicio al cliente</a>
-                    <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-question-circle"></i> Ayuda</a>
+                    <a class="text-white mb-2 d-inline mr-3 small" href="/dcakepasteleria/servicioalcliente.php"><i class="fas fa-user"></i> Servicio al cliente</a>
+                    <a class="text-white mb-2 d-inline mr-3 small" href="/dcakepasteleria/help.php"><i class="fas fa-question-circle"></i> Ayuda</a>
                 </nav>      
                     <!-- Iconos -->
                 <nav>
@@ -53,7 +53,7 @@ require 'config/conexion_producto.php';
                         </a><span class="text-white ml-2"><a href="/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
                     
                         <a href="#"><img class="sizei estrella"src="../images2/estrella.png" alt=""></a>
-                        <span class="text-white ml-2"><a href="#">Fidelizate</a></span>
+                        <span class="text-white ml-2"><a href="../dcakepasteleria/fidelizacion.php">Fidelizate</a></span>
                      
                         <a href="../dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../images2/vendedor.png" alt=""></a>
                         <span class="text-white ml-2"><a href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a></span> 
@@ -105,7 +105,7 @@ require 'config/conexion_producto.php';
         <div class = "columna">
              <img class = "sizephoto zoom2"src="images2/torta.jpg" alt="torta de chocolate">
              <h6>Torta de chocolate</h6>
-             <p> Que sugerir no sea un miedo, hazlo con confianza</p>
+             <p> Que sugerir no sea un miedo, hazlo con confianza. ¡Deja tu comentario!</p>
                 <img class= "sizephoto"src="/images2/suggestion.png" alt="mapa de dcake">
                 <a class = "text"href="../dcakepasteleria/comentarios.php">Quiero hacer una sugerencia</a>
         </div>
