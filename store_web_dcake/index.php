@@ -1,6 +1,9 @@
 <?php
-require 'config/config.php';
+require 'config/config.php'; //config del checkout
 require 'config/conexion_producto.php';
+require 'config/config2.php'; //config de la sección de usuario
+
+$nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -9,9 +12,11 @@ require 'config/conexion_producto.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/Style.css"> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/Style.css"> 
     <link rel="shortcut icon" href="/images2/icologo.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PT09Ijmp0iI6Tl/FJ+kzI1aAzZL3pZlp5K3Kk68rltS0Vv" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 </head>
 <body class = "margin general_font1">
     <a href="https://api.whatsapp.com/send?phone=573008936926" 
@@ -53,8 +58,11 @@ require 'config/conexion_producto.php';
                         </a><span class="text-white ml-2"><a href="/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
                     
                         <a href="#"><img class="sizei estrella"src="../images2/estrella.png" alt=""></a>
-                        <span class="text-white ml-2"><a href="../dcakepasteleria/fidelizacion.php">Fidelizate</a></span>
-                     
+                        <?php if (!empty($nombre_usuario)) : ?>
+                            <a href="../dcakepasteleria/apartado_cliente.php"><span class="text-white ml-2"><?php echo $nombre_usuario; ?></span></a>
+                        <?php else : ?>
+                            <span class="text-white ml-2"><a href="../dcakepasteleria/fidelizacion.php">Fidelizate</a></span>
+                        <?php endif; ?>                  
                         <a href="../dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../images2/vendedor.png" alt=""></a>
                         <span class="text-white ml-2"><a href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a></span> 
                 </nav>
@@ -91,6 +99,16 @@ require 'config/conexion_producto.php';
                 </li>
             </ul>
         </div>
+            <!-- Sección de ingreso a fidelización o nombre de usuario -->
+        <?php if (!empty($nombre_usuario)) : ?>
+            <!-- Mostrar el nombre del usuario -->
+            <span class="text-success ml-2 font-weight-bold">¡Hola, <?php echo $nombre_usuario; ?>!</span>
+        <?php else : ?>
+            <!-- Mostrar el botón de ingreso a fidelización -->
+            <a class="btn btn-primary mt-2" href="../dcakepasteleria/seccionfide.php">
+                Ingreso a fidelización
+            </a>
+        <?php endif; ?>
     </div>
 </nav>
 
@@ -281,6 +299,7 @@ require 'config/conexion_producto.php';
          <a  href="https://www.instagram.com/dcake99/" target="blank"><img class= "sizeicon-section4"src="images2/instagram.png" alt="instagramdirection"></a>
     </section>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>

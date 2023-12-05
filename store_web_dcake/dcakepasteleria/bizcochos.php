@@ -1,7 +1,10 @@
 <?php
 require '../config/config.php';
 require '../config/conexion_producto.php';
+require '../config/config2.php'; //config de la sección de usuario
 require '../config/conexionbuscador.php';
+
+$nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
 
 $db = new Database();
 $con = $db->conectar();
@@ -96,7 +99,11 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
                         </a><span class="text-white ml-2"><a href="/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
                     
                         <a href="#"><img class="sizei estrella"src="../images2/estrella.png" alt=""></a>
-                        <span class="text-white ml-2"><a href="#">Fidelizate</a></span>
+<?php if (!empty($nombre_usuario)) : ?>
+    <span class="text-white ml-2"><?php echo $nombre_usuario; ?></span>
+<?php else : ?>
+    <span class="text-white ml-2"><a href="../dcakepasteleria/fidelizacion.php">Fidelizate</a></span>
+<?php endif; ?>
                      
                         <a href="../dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../images2/vendedor.png" alt=""></a>
                         <span class="text-white ml-2"><a href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a></span> 
