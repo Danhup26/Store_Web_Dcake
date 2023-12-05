@@ -17,8 +17,8 @@ try {
 $usuario = $_POST['usuario'];
 $contrasena = $_POST['password'];
 
-// Consulta para obtener la contraseña encriptada desde la base de datos
-$stmt = $db->prepare("SELECT usuario, contraseña FROM store_web_dcake.usuario WHERE usuario = :usuario");
+// Consulta para obtener la información del usuario, incluido el id_usuario
+$stmt = $db->prepare("SELECT id, usuario, contraseña FROM store_web_dcake.usuario WHERE usuario = :usuario");
 $stmt->bindParam(':usuario', $usuario);
 $stmt->execute();
 
@@ -29,6 +29,12 @@ if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     if (password_verify($contrasena, $hashed_password)) {
         // Las credenciales son correctas, iniciar sesión
         $_SESSION['usuario'] = $row['usuario'];
+        
+        // Utiliza el nombre de columna correcto para el ID del usuario
+        $_SESSION['id_usuario'] = $row['id'];
+
+        // Imprime el valor de id_usuario para verificar
+        var_dump($_SESSION['id_usuario']);
 
         // Recuperar el carrito desde la base de datos y establecerlo en la sesión
         $_SESSION['carrito']['productos'] = recuperarCarritoDesdeBaseDeDatos($row['usuario']);
@@ -43,6 +49,8 @@ if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     // Usuario no encontrado, redirigir al formulario de inicio de sesión
     header('Location: seccionfide.php');
 }
+
+
 
 // Cerrar conexión a la base de datos
 $db = null;

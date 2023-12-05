@@ -8,8 +8,10 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Obtener el nombre de usuario de la sesión
+// Obtener el nombre de usuario e id_usuario de la sesión
 $nombre_usuario = $_SESSION['usuario'] ?? null;
+$id_usuario = $_SESSION['id_usuario'] ?? null;
+
 
 // Crear un identificador único para el carrito del usuario
 $carritoUsuario = 'carrito_' . $nombre_usuario;
@@ -84,9 +86,10 @@ if ($productos != null || !empty($nombre_usuario)) {
     $fecha_actual = date('Y-m-d h:i:s A');
     // Verifica si hay un usuario autenticado
     if (!empty($nombre_usuario)) {
+       // var_dump($_SESSION['id_usuario']); // Añade esta línea para verificar el valor
         // Inserta en la tabla "pedido" con la nueva columna "nombre_usuario"
-        $sql_pedido = $con->prepare("INSERT INTO store_web_dcake.pedido (fecha, nombre_usuario, total) VALUES (?, ?, ?)");
-        $sql_pedido->execute([$fecha_actual, $nombre_usuario, $total]);
+        $sql_pedido = $con->prepare("INSERT INTO store_web_dcake.pedido (fecha, id_usuario, nombre_usuario, total) VALUES (?,?, ?, ?)");
+        $sql_pedido->execute([$fecha_actual, $id_usuario, $nombre_usuario, $total]);
 
         // Obtén el ID generado por la inserción
         $id_pedido = $con->lastInsertId();
