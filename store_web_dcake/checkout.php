@@ -20,20 +20,38 @@ $carritoUsuario = 'carrito_' . $nombre_usuario;
 if (!isset($_SESSION[$carritoUsuario])) {
     $_SESSION[$carritoUsuario] = array();
 }
-// Limpiar el carrito al cerrar sesión
-unset($_SESSION[$carritoUsuario]);
 
 $db = new Database();
 $con = $db->conectar();
 
+// Guardar el carrito en la base de datos cuando el usuario agrega productos
+if (!empty($_SESSION['carrito']['productos']) && !empty($id_usuario)) {
+    foreach ($_SESSION['carrito']['productos'] as $clave => $cantidad) {
+        $sql_guardar_carrito = $con->prepare("INSERT INTO store_web_dcake.carrito (id_usuario, codigo_producto, cantidad) VALUES (?, ?, ?)");
+        $sql_guardar_carrito->execute([$id_usuario, $clave, $cantidad]);
+    }
+}
+
 $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 
 $lista_carrito = array();
-
 $total = 0.00;
-
 // Inicializa $id_pedido fuera del bucle
 $id_pedido = null;
+
+// Recuperar el carrito de la base de datos cuando el usuario inicia sesión
+if (!empty($nombre_usuario)) {
+    $sql_recuperar_carrito = $con->prepare("SELECT codigo_producto, cantidad FROM store_web_dcake.carrito WHERE id_usuario = ?");
+    $sql_recuperar_carrito->execute([$id_usuario]);
+
+    // Inicializar el carrito en la sesión
+    $_SESSION['carrito']['productos'] = array();
+
+    // Agregar productos al carrito en la sesión
+    while ($fila = $sql_recuperar_carrito->fetch(PDO::FETCH_ASSOC)) {
+        $_SESSION['carrito']['productos'][$fila['codigo_producto']] = $fila['cantidad'];
+    }
+}
 
 // Verifica si hay productos en el carrito o si hay un usuario autenticado
 if ($productos != null || !empty($nombre_usuario)) {
@@ -57,6 +75,7 @@ if ($productos != null || !empty($nombre_usuario)) {
                     'Descuento' => $producto['Descuento'],
                     'cantidad' => $cantidad
                 );
+                //echo 'Producto recuperado desde el carrito: ' . $producto['Nombre'] . ' - Cantidad: ' . $cantidad . '<br>';
             }
         }
     }
@@ -81,6 +100,21 @@ if ($productos != null || !empty($nombre_usuario)) {
     }
 
     $total = calcularTotal();
+
+    // Verificar si la recarga ya se ha realizado
+    if (!isset($_SESSION['recarga_realizada'])) {
+        // Recargar la página automáticamente después de un breve tiempo
+        echo '<script>
+                setTimeout(function() {
+                    location.reload(true);
+                }, 500); // Ajusta el tiempo según tus necesidades
+              </script>';
+
+        // Establecer la variable de sesión para indicar que la recarga ya se ha realizado
+        $_SESSION['recarga_realizada'] = true;
+    }
+
+
     
     date_default_timezone_set('America/Bogota');
     $fecha_actual = date('Y-m-d h:i:s A');
