@@ -38,7 +38,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Comentarios</a>
+                        <a class="nav-link" href="vista_comentarios.php">Comentarios</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="productos.php">Productos</a>

@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verifica si la consulta se ejecutó correctamente
         if ($result) {
             echo "Registro exitoso. ¡Bienvenido!";
+            header ("Location: ../index.php");
         } else {
             echo "Error al registrar. Por favor, inténtalo nuevamente.";
         }
