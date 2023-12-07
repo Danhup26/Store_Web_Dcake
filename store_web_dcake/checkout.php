@@ -68,6 +68,15 @@ if ($productos != null || !empty($nombre_usuario)) {
                 $subtotal = $cantidad * $producto['Precio'];
                 $total += $subtotal;
 
+                 // Verifica si la columna Descuento existe en el resultado de la consulta
+                $descuento = isset($producto['Descuento']) ? $producto['Descuento'] : 0;
+
+                // Calcula el precio con descuento (si lo tiene) y el precio real
+                $precio_desc = $producto['Precio'] - (($producto['Precio'] * $descuento) / 100);
+                $precio_real = $producto['Precio'];
+
+                $total += $subtotal;
+
                 $lista_carrito[] = array(
                     'Codigo' => $producto['Codigo'],
                     'Nombre' => $producto['Nombre'],
@@ -136,10 +145,10 @@ if ($productos != null || !empty($nombre_usuario)) {
 
             // Verifica si se obtuvo un producto antes de usarlo
             if ($producto) {
-                $sql_detalle = $con->prepare("INSERT INTO store_web_dcake.detalles_pedido (id_pedido, codigo_producto, nombre_producto, cantidad) VALUES (?, ?, ?, ?)");
+                $sql_detalle = $con->prepare("INSERT INTO store_web_dcake.detalles_pedido (id_pedido, codigo_producto, nombre_producto, cantidad, precio) VALUES (?, ?, ?, ?, ?)");
 
                 if ($id_pedido !== null) {
-                    $sql_detalle->execute([$id_pedido, $clave, $producto['Nombre'], $cantidad]);
+                    $sql_detalle->execute([$id_pedido, $clave, $producto['Nombre'], $cantidad, $producto['Precio']]);
                 } else {
                     echo "Error: ID de pedido no válido.";
                 }

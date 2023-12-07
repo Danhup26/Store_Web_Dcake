@@ -28,7 +28,7 @@ function obtenerHistorialPedidos($nombre_usuario)
             // Agrega lógica aquí para guardar el pedido en la base de datos
             try {
                 // Ejemplo de inserción en la base de datos (ajusta según tu estructura)
-                $query_insert_pedido = $con->prepare("INSERT INTO pedidos (id_pedido, id_usuario) VALUES (?, ?)");
+                $query_insert_pedido = $con->prepare("INSERT INTO store_web_dcake.pedido (id_pedido, id_usuario) VALUES (?, ?)");
                 $query_insert_pedido->execute([$idPedido, $usuario['id']]);
 
                 echo 'Éxito'; // Puedes devolver cualquier mensaje que desees
@@ -73,6 +73,9 @@ $historial_pedidos = obtenerHistorialPedidos($nombre_usuario);
     <title>Mi Avance</title>
     <!-- Agrega los estilos de Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -120,38 +123,6 @@ $historial_pedidos = obtenerHistorialPedidos($nombre_usuario);
     </div>
 </div>
 
-<!-- Modal para subir/cambiar la foto de perfil -->
-<div class="modal fade" id="subirFotoModal" tabindex="-1" role="dialog" aria-labelledby="subirFotoModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="subirFotoModalLabel">Subir/Cambiar Foto de Perfil</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Campos para subir o pegar enlace de foto -->
-                <div class="form-group">
-                    <label for="subirDesdePC">Subir desde tu computador:</label>
-                    <input type="file" class="form-control" id="subirDesdePC" accept="image/*">
-                </div>
-                <div class="form-group">
-                    <label for="pegarEnlace">Pegar enlace de foto de internet:</label>
-                    <input type="url" class="form-control" id="pegarEnlace">
-                </div>
-
-                <!-- Recuadro para visualizar la foto -->
-                <div id="recuadroVisualizacion" class="border p-3 mt-3" style="width: 100px; height: 100px;"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarFoto()">Guardar y Aceptar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal para mostrar el historial de pedidos -->
 <div class="modal" id="historialModal" tabindex="-1" role="dialog" aria-labelledby="historialModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -163,20 +134,53 @@ $historial_pedidos = obtenerHistorialPedidos($nombre_usuario);
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Mostrar el historial de pedidos -->
                 <?php
-                echo '<ul>';
-                foreach ($historial_pedidos as $pedido) {
-                    echo '<li>';
-                    echo 'Fecha: ' . $pedido['fecha'] . '<br>';
-                    echo 'Producto: ' . $pedido['nombre_producto'] . '<br>';
-                    echo 'Cantidad: ' . $pedido['cantidad'] . '<br>';
-                    echo 'Total: ' . $pedido['total'] . '<br>';
-                    echo '</li>';
-                }
-                echo '</ul>';
-                ?>
+                $currentDate = null; // Variable para rastrear la fecha actual
 
+                foreach ($historial_pedidos as $pedido) {
+                    if ($pedido['fecha'] !== $currentDate) {
+                        // Si la fecha es diferente, muestra la nueva fecha y reinicia la lista de productos
+                        if ($currentDate !== null) {
+                            echo '</tbody></table>';
+                            echo '<p>Total del Pedido: $' . number_format($total_pedido, 2, '.', ',') . '</p>';
+                        }
+                        echo '<p>ID Pedido: ' . $pedido['id_pedido'] . '</p>';
+                        echo '<p>Fecha: ' . $pedido['fecha'] . '</p>';
+                        echo '<table class="table">';
+                        echo '<thead><tr><th>Producto</th><th>Cantidad</th><th>Precio</th></tr></thead>';
+                        echo '<tbody>';
+                        $currentDate = $pedido['fecha'];
+                        $total_pedido = 0;
+                    }
+
+                    // Muestra los detalles del pedido
+                    echo '<tr>';
+                    echo '<td>' . $pedido['nombre_producto'] . '</td>';
+                    echo '<td>' . $pedido['cantidad'] . '</td>';
+                    
+                    // Obtén el descuento del producto
+                    $descuento_producto = isset($pedido['descuento']) ? $pedido['descuento'] : 0;
+
+                    // Calcula el precio con descuento
+                    $precio_con_descuento = $pedido['precio'] - (($pedido['precio'] * $descuento_producto) / 100);
+
+                    echo '<td>$' . number_format($precio_con_descuento, 2, '.', ',');
+                    if ($descuento_producto > 0) {
+                        echo ' (Descuento: ' . $descuento_producto . '%)';
+                    }
+                    echo '</td></tr>';
+
+                    // Suma el total del producto al total del pedido
+                    $total_pedido += $pedido['cantidad'] * $precio_con_descuento;
+                }
+
+                // Cierra la tabla y muestra el total del pedido
+                if (!empty($historial_pedidos)) {
+                    echo '</tbody></table>';
+                    echo '<p>Total del Pedido: $' . number_format($total_pedido, 2, '.', ',') . '</p>';
+                }
+                ?>
+                
                 <!-- Botón para realizar un nuevo pedido -->
                 <button type="button" class="btn btn-success" onclick="realizarNuevoPedidoDesdeHistorial()">Realizar Nuevo Pedido</button>
             </div>
@@ -186,6 +190,8 @@ $historial_pedidos = obtenerHistorialPedidos($nombre_usuario);
         </div>
     </div>
 </div>
+
+
 
 <script>
     // Función para iniciar el proceso de realizar un nuevo pedido desde el historial

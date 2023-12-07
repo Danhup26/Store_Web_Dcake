@@ -38,10 +38,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Ver comentarios</a>
+                        <a class="nav-link" href="#">Comentarios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="portalvendedor.php">Productos</a>
+                        <a class="nav-link" href="productos.php">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="usuarios.php">Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pedidos.php">Pedidos</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
@@ -72,21 +78,15 @@
     <ul class="list-group list-group-flush">
         <li class="list-group-item">Ver comentarios</li>
         <li class="list-group-item">Explorar productos</li>
+        <li class="list-group-item">Ver usuarios</li>
+        <li class="list-group-item">Ver pedidos</li>
         <li class="list-group-item">Configurar tu perfil</li>
     </ul>
     </section>
-
-
-
-
-
-
     <!-- Inicializa el modal de bienvenida -->
     <script>
         var myModal = new bootstrap.Modal(document.getElementById('modalBienvenida'));
         myModal.show();
     </script>
-
-
 </body>
 </html>
