@@ -2,27 +2,30 @@
 require 'config/config.php';
 require 'config/conexion_producto.php';
 require 'config/config2.php';
-
+$db = new Database();
+$con = $db->conectar();
 // Verificar y iniciar la sesión
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+// Definicion de algunas variables
+$lista_carrito = array();
+$total = 0.00;
+$subtotal = 0.00;
+// Inicializa $id_pedido fuera del bucle
+$id_pedido = null;
 
-// Obtener el nombre de usuario e id_usuario de la sesión
-$nombre_usuario = $_SESSION['usuario'] ?? null;
-$id_usuario = $_SESSION['id_usuario'] ?? null;
-
+// Obtener el nombre de usuario, el carrito e id_usuario de la sesión
+$nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : null;
+$id_usuario = isset($_SESSION['id_usuario']) ? $_SESSION['id_usuario'] : null;
+$productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 
 // Crear un identificador único para el carrito del usuario
 $carritoUsuario = 'carrito_' . $nombre_usuario;
-
 // Verificar si el carrito ya existe para este usuario
 if (!isset($_SESSION[$carritoUsuario])) {
     $_SESSION[$carritoUsuario] = array();
 }
-
-$db = new Database();
-$con = $db->conectar();
 
 // Guardar el carrito en la base de datos cuando el usuario agrega productos
 if (!empty($_SESSION['carrito']['productos']) && !empty($id_usuario)) {
@@ -32,27 +35,17 @@ if (!empty($_SESSION['carrito']['productos']) && !empty($id_usuario)) {
     }
 }
 
-$productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
-
-$lista_carrito = array();
-$total = 0.00;
-// Inicializa $id_pedido fuera del bucle
-$id_pedido = null;
-
 // Recuperar el carrito de la base de datos cuando el usuario inicia sesión
 if (!empty($nombre_usuario)) {
     $sql_recuperar_carrito = $con->prepare("SELECT codigo_producto, cantidad FROM store_web_dcake.carrito WHERE id_usuario = ?");
     $sql_recuperar_carrito->execute([$id_usuario]);
-
     // Inicializar el carrito en la sesión
     $_SESSION['carrito']['productos'] = array();
-
     // Agregar productos al carrito en la sesión
     while ($fila = $sql_recuperar_carrito->fetch(PDO::FETCH_ASSOC)) {
         $_SESSION['carrito']['productos'][$fila['codigo_producto']] = $fila['cantidad'];
     }
 }
-
 // Verifica si hay productos en el carrito o si hay un usuario autenticado
 if ($productos != null || !empty($nombre_usuario)) {
     // Si hay productos en el carrito, procede con la lógica del carrito
@@ -61,54 +54,32 @@ if ($productos != null || !empty($nombre_usuario)) {
             $sql = $con->prepare("SELECT Codigo, Nombre, Precio, Descuento FROM store_web_dcake.producto WHERE Codigo = ? AND Activo = 1 AND id_categoria = 1");
             $sql->execute([$clave]);
             $producto = $sql->fetch(PDO::FETCH_ASSOC);
-
             // Verifica si se obtuvo un producto antes de usarlo
-            if ($producto) {
-                // Inicializa $subtotal antes del cálculo
-                $subtotal = $cantidad * $producto['Precio'];
-                $total += $subtotal;
+            $subtotal = 0;
 
-                 // Verifica si la columna Descuento existe en el resultado de la consulta
+            if (is_array($producto) && array_key_exists('Precio', $producto)) {
+                $subtotal = $cantidad * $producto['Precio'];
+
+                // Verifica si la columna Descuento existe en el resultado de la consulta
                 $descuento = isset($producto['Descuento']) ? $producto['Descuento'] : 0;
 
                 // Calcula el precio con descuento (si lo tiene) y el precio real
-                $precio_desc = $producto['Precio'] - (($producto['Precio'] * $descuento) / 100);
-                $precio_real = $producto['Precio'];
+                $precio_desc = isset($producto['Precio']) && isset($producto['Descuento']) ? $producto['Precio'] - (($producto['Precio'] * $descuento) / 100) : 0;
+                $precio_real = isset($producto['Precio']) ? $producto['Precio'] : 0;
 
                 $total += $subtotal;
 
-                $lista_carrito[] = array(
-                    'Codigo' => $producto['Codigo'],
-                    'Nombre' => $producto['Nombre'],
-                    'Precio' => $producto['Precio'],
-                    'Descuento' => $producto['Descuento'],
-                    'cantidad' => $cantidad
+                    $lista_carrito[] = array(
+                        'Codigo' => $producto['Codigo'],
+                        'Nombre' => $producto['Nombre'],
+                        'Precio' => $producto['Precio'],
+                        'Descuento' => $producto['Descuento'],
+                        'cantidad' => $cantidad
                 );
-                //echo 'Producto recuperado desde el carrito: ' . $producto['Nombre'] . ' - Cantidad: ' . $cantidad . '<br>';
             }
+
         }
     }
-
-    // Función para calcular el total movida aquí
-    function calcularTotal()
-    {
-        $total = 0;
-        foreach ($_SESSION['carrito']['productos'] as $id => $cantidad) {
-            $db = new Database();
-            $con = $db->conectar();
-            $sql = $con->prepare("SELECT Precio, Descuento FROM store_web_dcake.producto WHERE Codigo =? AND Activo = 1 AND id_categoria = 1 LIMIT 1");
-            $sql->execute([$id]);
-            $row = $sql->fetch(PDO::FETCH_ASSOC);
-            $precio = $row['Precio'];
-            $descuento = $row['Descuento'];
-            $precio_desc = $precio - (($precio * $descuento) / 100);
-            $total += $cantidad * $precio_desc;
-        }
-
-        return $total;
-    }
-
-    $total = calcularTotal();
 
     // Verificar si la recarga ya se ha realizado
     if (!isset($_SESSION['recarga_realizada'])) {
@@ -118,12 +89,9 @@ if ($productos != null || !empty($nombre_usuario)) {
                     location.reload(true);
                 }, 500); // Ajusta el tiempo según tus necesidades
               </script>';
-
         // Establecer la variable de sesión para indicar que la recarga ya se ha realizado
         $_SESSION['recarga_realizada'] = true;
     }
-
-
     
     date_default_timezone_set('America/Bogota');
     $fecha_actual = date('Y-m-d h:i:s A');
@@ -133,10 +101,8 @@ if ($productos != null || !empty($nombre_usuario)) {
         // Inserta en la tabla "pedido" con la nueva columna "nombre_usuario"
         $sql_pedido = $con->prepare("INSERT INTO store_web_dcake.pedido (fecha, id_usuario, nombre_usuario, total) VALUES (?,?, ?, ?)");
         $sql_pedido->execute([$fecha_actual, $id_usuario, $nombre_usuario, $total]);
-
         // Obtén el ID generado por la inserción
         $id_pedido = $con->lastInsertId();
-
         // Inserta en la tabla "detalles_pedido" después de procesar todos los productos
         foreach ($productos as $clave => $cantidad) {
             $sql = $con->prepare("SELECT Codigo, Nombre, Precio, Descuento FROM store_web_dcake.producto WHERE Codigo = ? AND Activo = 1 AND id_categoria = 1");
@@ -174,7 +140,6 @@ if ($productos != null || !empty($nombre_usuario)) {
         </div>
     </div>
 </div>';
-
 // Lanzar el modal usando JavaScript
 echo '<script>
     $(document).ready(function() {
@@ -202,7 +167,6 @@ echo '<script>
             </div>
         </div>
     </div>';
-
     // Lanzar el modal usando JavaScript
     echo '<script>
         $(document).ready(function() {
@@ -213,6 +177,7 @@ echo '<script>
 // Cerrar la conexión
 $con = null;
 ?>
+
 
 <!DOCTYPE html>  
 <html lang="en">
@@ -226,12 +191,10 @@ $con = null;
     <link rel="stylesheet" href="/css/Style.css"> 
     <link rel="shortcut icon" href="/images2/icologo.ico">
 </head>
-
 <script>
 $(document).ready(function() {
     $("#fidelizacionModal, #carritoVacioModal").modal("show");
 });
-
 </script>
 <body class = "margin">
     <a href="https://api.whatsapp.com/send?phone=573008936926" 
@@ -250,7 +213,6 @@ $(document).ready(function() {
                         <img class="logo zoomlogo" src="/images2/dcakelogo.png" alt="dcake logo oficial">
                     </a>
                 </div>
-
     <!-- ANCLAS -->
     <div class="col-md-5 text-right"> <!-- Columna para anclas e iconos -->
     <nav class= "anclas">
@@ -277,7 +239,6 @@ $(document).ready(function() {
         </div>
     </div>
     </header>
-
     <main >
         <div class = "container"> 
             <table class="table">
@@ -294,7 +255,6 @@ $(document).ready(function() {
                     <?php if($lista_carrito == null){
                         echo '<tr><td colspan= "5" class = "text-center"><b>Lista vacia</b></td></tr>';
                     }else{
-
                         $total = 0;
                         foreach($lista_carrito as $producto){
                             $_id = $producto['Codigo'];
@@ -319,9 +279,8 @@ $(document).ready(function() {
                             <div id="subtotal_<?php echo $_id ?>" name = "subtotal[]"><?php echo 
                             MONEDA . number_format($subtotal, 2, ',' , '.'); ?></div>
                         </td>    
-                        <td> <a href="#" id= "eliminar" class= "btn btn-warning btn-sm" data-bs-id ="<?php 
-                        echo $_id ?>" data-bs-toggle="modal" data-bs-target="#eliminaModal">Eliminar</a></td>
-                    </tr>
+                        <td><a href="#" id= "eliminar" class= "btn btn-warning btn-sm" data-bs-id ="<?php 
+                        echo $_id ?>" data-bs-toggle="modal" data-bs-target="#eliminaModal">Eliminar</a></td>                    </tr>
                     <?php } ?>
                     <tr>
                         <td colspan = "3"></td>
@@ -333,7 +292,6 @@ $(document).ready(function() {
             <?php } ?>                
             </table>    
         </div>
-
         <div class = "row">
             <div class = "col-md-4 offset-md-7 d-grid gap-2"> 
             <a href="#" id= "pedido" class= "btn btn-success btn-block btn-sm" data-bs-id ="<?php 
@@ -341,7 +299,6 @@ $(document).ready(function() {
             </div>
         </div>
     </main>
-
      <!-- Modal1  -->
         <div class="modal fade" id="eliminaModal" tabindex="-1" aria-labelledby="eliminaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -355,13 +312,10 @@ $(document).ready(function() {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Volver</button>
-                <button id = "btn-elimina"type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>
-            </div>
+                <button id = "btn-elimina"type="button" class="btn btn-danger" onclick="eliminar()">Eliminar</button>            </div>
             </div>
         </div>
         </div>
-
-
      <!-- CONTIENE COMPRA A REALIZAR    -->
     <!-- Modal2 -->
     <div class="modal fade" id="pedidoModal" tabindex="-1" aria-labelledby="pedidoModalLabel" aria-hidden="true">
@@ -376,16 +330,12 @@ $(document).ready(function() {
                     <!-- Campos de nombre, dirección, teléfono, correo, etc. -->
                     <label class= "input-group flex-nowrap " for="nombre">Nombre:</label>
                     <input class="form-control" type="text" name="nombre" required><br><br>
-
                     <label class= "input-group flex-nowrap" for="direccion">Dirección:</label>
                     <input class="form-control" type="text" name="direccion" required><br><br>
-
                     <label class= "input-group flex-nowrap" for="telefono">Télefono:</label>
                     <input class="form-control" type="text" name="telefono" required><br><br>
-
                     <label class= "input-group flex-nowrap" for="correo">Correo:</label>
                     <input class="form-control" type="text" name="correo" required><br><br>
-
                     <!-- Agrega una lista para mostrar los productos seleccionados -->
                     <h2>Productos Seleccionados:</h2>
                     <ul id="lista-productos"></ul>
@@ -405,7 +355,6 @@ $(document).ready(function() {
                     <?php if($lista_carrito == null){
                         echo '<tr ><td colspan= "5" class = "text-center"><b>Lista vacia</b></td></tr>';
                     }else{
-
                           $total = 0;
                         foreach($lista_carrito as $producto){
                             $_id = $producto['Codigo'];
@@ -450,52 +399,52 @@ $(document).ready(function() {
     </div>
 </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+<script>
 
-    <script>
+        let eliminaModal = document.getElementById('eliminaModal')
+        eliminaModal.addEventListener('show.bs.modal', function(event){
 
-//ACTUALIZAR CARRITO
-function actualizaCantidad(cantidad, id) {
-    let url = 'clases/actualizar_carrito.php';
-    let formData = new FormData();
-    formData.append('action', 'agregar');
-    formData.append('Codigo', id);
-    formData.append('cantidad', cantidad);
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let buttonElimina = eliminaModal.querySelector('.modal-footer #btn-elimina')
+            buttonElimina.value = id
+        })          
 
-    fetch(url, {
-        method: 'POST',
-        body: formData,
-        mode: 'cors'
-    }).then(response => response.json())
-        .then(data => {
-            if (data.ok) {
-                let divsubtotal = document.getElementById('subtotal_' + id);
-                divsubtotal.innerHTML = data.sub;
+        function actualizaCantidad(cantidad, id)
+        {
+            let url = 'clases/actualizar_carrito.php'
+            let formData = new FormData()
+            formData.append('action', 'agregar')
+            formData.append('Codigo', id)
+            formData.append('cantidad', cantidad)
 
-                // Recalcular el total sumando los subtotales
-                let total = 0.00;
-                let list = document.getElementsByName('subtotal[]');
+            fetch(url,{
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+            }).then(response => response.json())
+            .then(data => {
+                if(data.ok){
+                    let divsubtotal = document.getElementById('subtotal_' + id)
+                    divsubtotal.innerHTML = data.sub
 
-                for (let i = 0; i < list.length; i++) {
-                    let subtotalNumber = parseFloat(list[i].textContent.replace(/[^\d.-]/g, ''));
-                    total += subtotalNumber;
-                }
+                    let total = 0.00
+                    let list = document.getElementsByName('subtotal[]')
 
-                // Formatear y mostrar el total
-                total = new Intl.NumberFormat('es-CO', {
-                    style: 'currency',
-                    currency: 'COP',
-                    minimumFractionDigits: 3
-                }).format(total);
+                    for(let i = 0; i < list.length; i++){
+                        total += parseFloat(list[i].innerHTML.replace(/[$,]/g, ''))
+                    }
 
-                console.log(total); // Puedes usar este console.log si necesitas verificar el formato
+                    total = new Intl.NumberFormat('en-IN',{
+                        minimumFractionDigits: 3
+                    }).format(total)
+                    document.getElementById('total').innerHTML = '<?php echo MONEDA;?>'+ total
+                } 
+            })
+        }
 
-                // Actualizar el elemento del documento con el nuevo total
-                document.getElementById('total').innerHTML = total;
-            }
-        });
-}
-        // JAVASCRIPT FUNCION ELIMINAR
         function eliminar()
         {
             let botonElimina = document.getElementById('btn-elimina')
@@ -518,75 +467,6 @@ function actualizaCantidad(cantidad, id) {
             })
         }
     </script>
-
- <!-- REDIRECIONAR A WHATSAPP  -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    // Obtén los elementos del formulario
-    const nombreInput = document.querySelector('input[name="nombre"]');
-    const direccionInput = document.querySelector('input[name="direccion"]');
-    const telefonoInput = document.querySelector('input[name="telefono"]');
-    const correoInput = document.querySelector('input[name="correo"]');
-    const irAWhatsappButton = document.getElementById('btn-ir-whatsapp');
-
-    // Agrega un evento al botón "Ir a WhatsApp"
-    irAWhatsappButton.addEventListener('click', function () {
-        // Obtén los valores de los campos del formulario
-        const nombre = nombreInput.value;
-        const direccion = direccionInput.value;
-        const telefono = telefonoInput.value;
-        const correo = correoInput.value;
-
-        // Construye el mensaje de WhatsApp con los detalles del pedido
-        let mensaje = `D'cake pasteleria.\n\nProceso de pedido:\n\nPedido de: ${nombre}\nDirección: ${direccion}\nTeléfono: ${telefono}\nCorreo: ${correo}\nBANCOLOMBIA-AHORRO A LA MANO\n 030-089369-26`;
-
-        // Obtén los productos seleccionados dinámicamente
-        const productos = document.querySelectorAll('.producto-seleccionado');
-        const productosArray = [];
-
-        productos.forEach(function (producto) {
-            const nombreProducto = producto.querySelector('.product').textContent;
-            const precioProducto = producto.querySelector('.price').textContent;
-            const cantidadProducto = producto.querySelector('.cant').textContent;
-            mensaje += `\nProducto: ${nombreProducto}\nPrecio: ${precioProducto}\nCantidad: ${cantidadProducto}\n`;
-
-            productosArray.push({
-                nombre: nombreProducto,
-                precio: precioProducto,
-                cantidad: cantidadProducto
-            });
-        });
-
-        // Realiza una solicitud AJAX para guardar el pedido
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'procesar_pedido.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // La solicitud se completó con éxito
-                console.log('Pedido guardado en la base de datos');
-            } else if (xhr.readyState == 4 && xhr.status != 200) {
-                // La solicitud falló, muestra un mensaje de error si es necesario
-                console.error('Error en la solicitud AJAX');
-            }
-        };
-
-        // Construye la cadena de parámetros para enviar al servidor
-        const params = `nombre=${encodeURIComponent(nombre)}&direccion=${encodeURIComponent(direccion)}&telefono=${encodeURIComponent(telefono)}&correo=${encodeURIComponent(correo)}&productos=${encodeURIComponent(JSON.stringify(productosArray))}`;
-
-        // Envía la solicitud al servidor
-        xhr.send(params);
-
-        // URL de WhatsApp para enviar el mensaje
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=573008936926&text=${encodeURIComponent(mensaje)}`;
-
-        // Abre WhatsApp en la misma ventana o pestaña cambiando la ubicación actual
-        window.location.href = whatsappUrl;
-    });
-});
-
-</script>
-
+    
 </body>
 </html>
