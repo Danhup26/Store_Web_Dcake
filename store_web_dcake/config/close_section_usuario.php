@@ -6,6 +6,6 @@ session_start();
 session_destroy();
 
 // Redirige al usuario a index.php con un mensaje
-header('Location: ../index.php');
+header('Location: ../store_web_dcake/index.php');
 exit();
 ?>

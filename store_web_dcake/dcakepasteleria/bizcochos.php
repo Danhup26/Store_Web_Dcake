@@ -1,8 +1,8 @@
 <?php
-require '../config/config.php';
-require '../config/conexion_producto.php';
-require '../config/config2.php'; //config de la sección de usuario
-require '../config/conexionbuscador.php';
+require '../store_web_dcake/config/config.php';
+require '../store_web_dcake/config/conexion_producto.php';
+require '../store_web_dcake/config/config2.php'; //config de la sección de usuario
+require '../store_web_dcake/config/conexionbuscador.php';
 
 $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
 
@@ -202,7 +202,7 @@ $resultado = $sql -> fetchAll(PDO::FETCH_ASSOC);
                     let elemento = document.getElementById("num_cart")
                     elemento.innerHTML = data.numero
                 }else {
-      console.error("Error en la respuesta:", data.error);
+      console.error("Error en <?php echo hash_hmac('sha1', $row['Codigo'], KEY_TOKEN); ?>')">Añadir al carrito</button>la respuesta:", data.error);
     }
   })
   .catch(error => {

@@ -1,5 +1,5 @@
 <?php
-require 'conexion_comentario.php';
+require '../store_web_dcake/config/conexion_comentario.php';
 ?>
 <?php
 // Verifica si se ha enviado el formulario

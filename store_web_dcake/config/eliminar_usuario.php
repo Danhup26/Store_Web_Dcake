@@ -4,7 +4,7 @@ if (isset($_POST['idUsuario'])) {
     $idUsuario = $_POST['idUsuario'];
 
     // Realizar la conexión a la base de datos
-    require '../config/conexion_usuario.php';
+    require '../store_web_dcake/config/conexion_usuario.php';
 
     // Preparar la consulta para eliminar al usuario
     $sql = "DELETE FROM store_web_dcake.usuario WHERE id = ?";

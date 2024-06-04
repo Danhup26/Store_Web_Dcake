@@ -1,7 +1,7 @@
 <?php
-require 'config/config.php'; //config del checkout
-require 'config/conexion_producto.php';
-require 'config/config2.php'; //config de la sección de usuario
+require '../store_web_dcake/config/config.php'; //config del checkout
+require '../store_web_dcake/config/conexion_producto.php';
+require '../store_web_dcake/config/config2.php'; //config de la sección de usuario
 
 $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
 ?>
@@ -13,15 +13,15 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D'cake pasteleria</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/Style.css"> 
+    <link rel="stylesheet" href="../store_web_dcake/css/Style.css"> 
     <link rel="shortcut icon" href="/images2/icologo.ico">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PT09Ijmp0iI6Tl/FJ+kzI1aAzZL3pZlp5K3Kk68rltS0Vv" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 </head>
 <body class = "margin general_font1">
     <a href="https://api.whatsapp.com/send?phone=573008936926" 
      target="_blank">
-    <img class = "whatsappicon"src="images2/whagifs.gif" alt="whatsapp"></a>
+    <img class = "whatsappicon"src="../store_web_dcake/images2/whagifs.gif" alt="whatsapp"></a>
     <!-- cabecera de la pagina web, parte superior -->
     <h3 class= "contactar font_contactar">
         WhatsApp
@@ -32,8 +32,8 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
         <div class="row justify-content-between align-items-center">
             <!-- LOGO -->
             <div class="col-md-2">
-                <a href="../index.php">
-                    <img class="logo zoomlogo" src="/images2/dcakelogo.png" alt="dcake logo oficial">
+                <a href="../store_web_dcake/index.php">
+                    <img class="logo zoomlogo" src="../store_web_dcake/images2/dcakelogo.png" alt="dcake logo oficial">
                 </a>
             </div>
 
@@ -41,7 +41,7 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
             <div class="col-md-4 text-center mensaje-bienvenida mensaje">
                 <h2 class="text-white">¡Bienvenido a D'cake!</h2>
                 <p class="lead text-white">Descubre nuestras deliciosas opciones para satisfacer tus antojos.</p>
-                <a href="/dcakepasteleria/bizcochos.php" class="btn btn-primary btn-sm">¡Empezar a explorar!</a>
+                <a href="../store_web_dcake/dcakepasteleria/bizcochos.php" class="btn btn-primary btn-sm">¡Empezar a explorar!</a>
             </div>
 
             <!-- ANCLAS -->
@@ -49,21 +49,21 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
                 <nav class= "anclas">
                     <!-- Anclas -->
                     <a class="text-white mb-2 d-inline mr-3 small" href="#"><i class="fas fa-phone"></i> Teléfono: (604) 34 233 23</a>
-                    <a class="text-white mb-2 d-inline mr-3 small" href="/dcakepasteleria/servicioalcliente.php"><i class="fas fa-user"></i> Servicio al cliente</a>
-                    <a class="text-white mb-2 d-inline mr-3 small" href="/dcakepasteleria/help.php"><i class="fas fa-question-circle"></i> Ayuda</a>
+                    <a class="text-white mb-2 d-inline mr-3 small" href="../store_web_dcake/dcakepasteleria/servicioalcliente.php"><i class="fas fa-user"></i> Servicio al cliente</a>
+                    <a class="text-white mb-2 d-inline mr-3 small" href="../store_web_dcake/dcakepasteleria/help.php"><i class="fas fa-question-circle"></i> Ayuda</a>
                 </nav>      
                     <!-- Iconos -->
                 <nav>
-                        <a href="/checkout.php"><img  class = "sizei carrito" src="../images2/carrito.png" ></img></a>
-                        </a><span class="text-white ml-2"><a href="/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
+                        <a href="../store_web_dcake/checkout.php"><img  class = "sizei carrito" src="../store_web_dcake/images2/carrito.png" ></img></a>
+                        </a><span class="text-white ml-2"><a href="../store_web_dcake/checkout.php">Mi carrito</a><span id="num_cart" class="badge bg-secondary"><?php echo $num_cart; ?></span></a>
                     
-                        <a href="#"><img class="sizei estrella"src="../images2/estrella.png" alt=""></a>
+                        <a href="#"><img class="sizei estrella"src="../store_web_dcake/images2/estrella.png" alt=""></a>
                         <?php if (!empty($nombre_usuario)) : ?>
-                            <a href="../dcakepasteleria/apartado_cliente.php"><span class="text-white ml-2"><?php echo $nombre_usuario; ?></span></a>
+                            <a href="../store_web_dcake/dcakepasteleria/apartado_cliente.php"><span class="text-white ml-2"><?php echo $nombre_usuario; ?></span></a>
                         <?php else : ?>
-                            <span class="text-white ml-2"><a href="../dcakepasteleria/fidelizacion.php">Fidelizate</a></span>
+                            <span class="text-white ml-2"><a href="../store_web_dcake/dcakepasteleria/fidelizacion.php">Fidelizate</a></span>
                         <?php endif; ?>                  
-                        <a href="../dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../images2/vendedor.png" alt=""></a>
+                        <a href="../store_web_dcake/dcakepasteleria/ingreso_vendedor.php"><img class="sizei vendedor"src="../store_web_dcake/images2/vendedor.png" alt=""></a>
                         <span class="text-white ml-2"><a href="../dcakepasteleria/ingreso_vendedor.php">Portal vendedor</a></span> 
                 </nav>
             </div>
@@ -80,10 +80,10 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dcakepasteleria/bizcochos.php">Bizcochos</a>
+                    <a class="nav-link" href="../store_web_dcake/dcakepasteleria/bizcochos.php">Bizcochos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../dcakepasteleria/bizcochos+con+relleno.php">Bizcochos con relleno</a>
+                    <a class="nav-link" href="../store_web_dcake/dcakepasteleria/bizcochos+con+relleno.php">Bizcochos con relleno</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Bizcochos con relleno y cobertura</a>
@@ -105,7 +105,7 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
             <span class="text-success ml-2 font-weight-bold">¡Hola, <?php echo $nombre_usuario; ?>!</span>
         <?php else : ?>
             <!-- Mostrar el botón de ingreso a fidelización -->
-            <a class="btn btn-primary mt-2" href="../dcakepasteleria/seccionfide.php">
+            <a class="btn btn-primary mt-2" href="../store_web_dcake/dcakepasteleria/seccionfide.php">
                 Ingreso a fidelización
             </a>
         <?php endif; ?>
@@ -121,34 +121,34 @@ $nombre_usuario = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
     <section class = "general_section flex text_center">
         <hr>
         <div class = "columna">
-             <img class = "sizephoto zoom2"src="images2/torta.jpg" alt="torta de chocolate">
+             <img class = "sizephoto zoom2"src="../store_web_dcake/images2/torta.jpg" alt="torta de chocolate">
              <h6>Torta de chocolate</h6>
              <p> Que sugerir no sea un miedo, hazlo con confianza. ¡Deja tu comentario!</p>
-                <img class= "sizephoto"src="/images2/suggestion.png" alt="mapa de dcake">
-                <a class = "text"href="../dcakepasteleria/comentarios.php">Quiero hacer una sugerencia</a>
+                <img class= "sizephoto"src="../store_web_dcake/images2/suggestion.png" alt="mapa de dcake">
+                <a class = "text"href="../store_web_dcake/dcakepasteleria/comentarios.php">Quiero hacer una sugerencia</a>
         </div>
 
         <div class = "columna">
-             <img class = "sizephoto zoom2"src="images2/torta2.jpg" alt="torta de chocolate">
+             <img class = "sizephoto zoom2"src="../store_web_dcake/images2/torta2.jpg" alt="torta de chocolate">
              <h6>Torta de café</h6>
              <p>Llega a D'cake sin problemas, ponte en plan y ven a visitarnos</p>
-             <img class= "sizephoto"src="images2/maps.PNG" alt="mapa de dcake">
+             <img class= "sizephoto"src="../store_web_dcake/images2/maps.PNG" alt="mapa de dcake">
              <a class = "text "href="https://www.google.com/maps/place/Pasteleria+D'CAKE/@7.8816119,-76.6435956,14z/data=!4m10!1m2!2m1!1scake+pasteleria+apartado!3m6!1s0x8e500dd43ec95391:0xb9ce98772a19f379!8m2!3d7.8769634!4d-76.6091902!15sChhjYWtlIHBhc3RlbGVyaWEgYXBhcnRhZG9aGiIYY2FrZSBwYXN0ZWxlcmlhIGFwYXJ0YWRvkgEJY2FrZV9zaG9w4AEA!16s%2Fg%2F11tcd61t65?entry=ttu" target="_blank">¿Como llegar a D'cake?</a>
         </div>
 
         <div class = "columna">
-             <img class = "sizephoto zoom2"src="images2/torta3.jpg" alt="torta de cafe">
+             <img class = "sizephoto zoom2"src="../store_web_dcake/images2/torta3.jpg" alt="torta de cafe">
              <h6>Torta de chocolate explosión</h6>
              <p>Sabemos que hay muchas fechas importantes, quieres algo diferente, ¿cierto?</p>
-             <img class= "sizephoto"src="images2/especial.jpg" alt="mapa de dcake">
+             <img class= "sizephoto"src="../store_web_dcake/images2/especial.jpg" alt="mapa de dcake">
              <a class = "text "href="#">Personalizar mi pedido</a>
         </div>
 
         <div  class = "columna">
-             <img class = "sizephoto zoom2"src="images2/torta4.jpg" alt="torta de chocolate">  
+             <img class = "sizephoto zoom2"src="../store_web_dcake/images2/torta4.jpg" alt="torta de chocolate">  
              <h6>Torta de chocolate fusión</h6>
              <p> Obten bonos, gana premios y muchas cosas más. Para D'cake son muy importante sus clientes.</p>
-             <img class= "sizephoto"src="images2/fidelizacion.png" alt="mapa de dcake">
+             <img class= "sizephoto"src="../store_web_dcake/images2/fidelizacion.png" alt="mapa de dcake">
                <a class = "text "href="#">Fidelización</a>
         </div>
         <hr>

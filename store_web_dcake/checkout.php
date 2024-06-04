@@ -1,7 +1,7 @@
 <?php
-require 'config/config.php';
-require 'config/conexion_producto.php';
-require 'config/config2.php';
+require '../store_web_dcake/config/config.php';
+require '../store_web_dcake/config/conexion_producto.php';
+require '../store_web_dcake/config/config2.php';
 $db = new Database();
 $con = $db->conectar();
 // Verificar y iniciar la sesión

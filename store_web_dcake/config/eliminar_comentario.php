@@ -4,7 +4,7 @@ if (isset($_POST['idComentario'])) {
     $idComentario = $_POST['idComentario'];
 
     // Realizar la conexión a la base de datos
-    require '../config/conexion_usuario.php';
+    require '../store_web_dcake/config/conexion_usuario.php';
 
     // Preparar la consulta para eliminar el comentario
     $sql = "DELETE FROM store_web_dcake.comentario WHERE id_comentario = ?";

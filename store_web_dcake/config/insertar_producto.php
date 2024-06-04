@@ -17,7 +17,7 @@ if (isset($_POST['codigo']) && isset($_POST['nombre']) && isset($_POST['descripc
     
     if ($stmt->execute()) {
         // La inserción fue exitosa, redirigir a portalvendedor.php
-        header("Location: ../dcakepasteleria/portalvendedor.php");
+        header("Location: ../store_web_dcake/dcakepasteleria/portalvendedor.php");
         exit();
     } else {
         echo "Error al insertar el producto.";
